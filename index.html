@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Traffic Light Simulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<h1 style="text-align: center; margin-top: 100px;">Traffic Light Simulator</h1>
+    <div class="traffic_box">
+	<button id="red" class="red"></button>
+	<button id="yellow" class="yellow"></button>
+	<button id="green" class="green"></button>
+    </div>
+    <h1 id="type"></h1>
+    </div>
+	<script>
+
+		const RED_TIME = 20000; // 20 seconds
+		const GREEN_TIME = 15000; // 15 seconds
+		const YELLOW_TIME = 5000; // 5 seconds
+
+		let currentState = "red";
+		let timerId;
+
+		function ab(button) {
+			button.classList.remove("black");
+		}
+
+		function db(button) {
+			button.classList.add("black");
+		}
+
+		function transitionToGreen() {
+			db(document.getElementById("red"));
+			db(document.getElementById("yellow"));
+			ab(document.getElementById("green"));
+            document.getElementById("type").innerHTML="GREEN";
+            document.getElementById("type").style.color="#00ff54";
+			timerId = setTimeout(transitionToYellow, GREEN_TIME);
+		}
+
+		function transitionToYellow() {
+			db(document.getElementById("green"));
+            db(document.getElementById("red"));
+			ab(document.getElementById("yellow"));
+            document.getElementById("type").innerHTML="Yellow";
+            document.getElementById("type").style.color="yellow";
+			timerId = setTimeout(transitionToRed, YELLOW_TIME);
+		}
+
+		function transitionToRed() {
+			db(document.getElementById("yellow"));
+            db(document.getElementById("green"));
+			ab(document.getElementById("red"));
+            document.getElementById("type").innerHTML="Red";
+            document.getElementById("type").style.color="red";
+			timerId = setTimeout(transitionToGreen, RED_TIME);
+		}
+
+		document.getElementById("red").addEventListener("click", () => {
+			clearTimeout(timerId);
+			transitionToRed();
+			
+		});
+
+		document.getElementById("yellow").addEventListener("click", () => {
+			clearTimeout(timerId);
+			  transitionToYellow();
+		});
+
+		document.getElementById("green").addEventListener("click", () => {
+			clearTimeout(timerId);
+			 transitionToGreen();
+		});
+
+		transitionToRed();
+	</script>
+</body>
+</html>
